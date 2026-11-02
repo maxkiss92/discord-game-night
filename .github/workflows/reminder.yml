@@ -1,0 +1,20 @@
+name: Weekly Discord Game Night Reminder
+
+on:
+  schedule:
+    # Runs every Monday at 3:00 PM Pacific Time
+    - cron: '0 23 * * 1'
+  workflow_dispatch: # Allows manual testing anytime
+
+jobs:
+  post-reminder:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Webhook to Discord
+        run: |
+          curl -H "Content-Type: application/json" \
+               -X POST \
+               -d '{
+                 "content": "🎲 **Reminder:** Don'\''t forget to mark **Interested** for this Wednesday'\''s Board Game Night!\n\nhttps://discord.com/events/1473912811905093683/1566952530506678302\n\nClick the link above to open the event card and RSVP so we can prep table counts. See you at the table! 🃏"
+               }' \
+               "${{ secrets.DISCORD_WEBHOOK_URL }}"
